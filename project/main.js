@@ -36,7 +36,35 @@ class SeesawSimulation {
     }
 
     handleDrop(event) {
-    }
+    const plankRect = this.plank.getBoundingClientRect();
+    const mouseX = event.clientX;
+
+    if (mouseX < plankRect.left || mouseX > plankRect.right) return;
+
+    const relativeX = mouseX - plankRect.left;
+
+    const weight = this.nextWeight;
+
+    const distanceFromCenter = Math.round(
+        Math.abs(relativeX - this.PIVOT_CENTER)
+    );
+    const side = relativeX < this.PIVOT_CENTER ? "left" : "right";
+
+    this.addToHistory(weight, side, distanceFromCenter);
+
+    this.addObject(relativeX, weight);
+
+    this.nextWeight = this.generateRandomWeight();
+    this.updateNextWeightDisplay();
+
+    this.removePreview();
+    this.createPreview();
+    this.updatePreview(event);
+
+    this.updateSeesawBalance();
+
+    this.saveState();
+}
     
 }
 
