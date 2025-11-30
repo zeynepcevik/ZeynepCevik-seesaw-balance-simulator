@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Seesaw Simulation</title>
 
-  <!-- Styles: create style.css later and commit -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -15,7 +14,6 @@
       <p class="lead">Click the plank to drop weights. Weights are stored in localStorage.</p>
     </header>
 
-    <!-- top stats -->
     <section class="stats-bar" aria-label="Seesaw statistics">
       <div class="stat-box" aria-hidden="false">
         <div class="stat-label">Left Weight</div>
@@ -38,20 +36,16 @@
       </div>
     </section>
 
-    <!-- visual area -->
     <section class="seesaw-area" aria-label="Seesaw area" role="application">
       <div class="ground" aria-hidden="true"></div>
       <div class="fulcrum" aria-hidden="true"></div>
-      <!-- plank must keep id="plank" for JS to target it -->
       <div class="plank" id="plank" role="button" tabindex="0" aria-pressed="false" aria-label="Seesaw plank"></div>
     </section>
 
-    <!-- controls -->
     <section class="controls" aria-label="Controls">
       <button class="btn" id="resetBtn" type="button" aria-label="Reset simulation">🔄 Reset Seesaw</button>
     </section>
 
-    <!-- history -->
     <aside class="history-section" aria-label="Drop history">
       <h2 class="history-title">📝 Drop History</h2>
       <div class="history-list" id="historyList">
@@ -62,12 +56,10 @@
     </aside>
 
     <footer style="display:none;">
-      <!-- reserved for possible credits / version -->
       <small id="version">v1.0.0</small>
     </footer>
   </main>
 
-  <!-- Script: create script.js later and commit -->
   <script src="script.js" defer></script>
 </body>
 </html>

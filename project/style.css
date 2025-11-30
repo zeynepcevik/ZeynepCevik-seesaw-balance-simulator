@@ -1,0 +1,70 @@
+/* ====== RESET ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ====== PAGE BODY ====== */
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(to bottom, #87ceeb, #e0f6ff);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* ====== MAIN CONTAINER ====== */
+.container {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  width: 100%;
+}
+
+/* ====== STATS BAR ====== */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+/* ====== STAT BOX ====== */
+.stat-box {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e0e0e0;
+}
+
+.stat-label {
+  font-size: 0.75em;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Color accents */
+.stat-box.next-weight .stat-value {
+  color: #3498db;
+}
+
+.stat-box.tilt-angle .stat-value {
+  color: #e74c3c;
+}
