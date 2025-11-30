@@ -64,7 +64,26 @@ class SeesawSimulation {
     this.updateSeesawBalance();
 
     this.saveState();
-}
+    }
+
+    addObject(position, weight) {
+    const objectData = {
+        position: position,
+        weight: weight,
+        element: null
+    };
+
+    objectData.element = this.createObjectElement(position, weight);
+
+    this.plank.appendChild(objectData.element);
+
+    this.objects.push(objectData);
+
+    setTimeout(() => {
+        objectData.element.classList.remove("dropping");
+        objectData.element.style.top = `-35px`;
+    }, 600);
+    }
     
 }
 
