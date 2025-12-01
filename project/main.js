@@ -186,6 +186,77 @@ class SeesawSimulation {
 
     this.updateHistoryDisplay();
   }
+  updateHistoryDisplay() {
+    if (this.history.length === 0) {
+      this.historyList.innerHTML = `
+            <div style="text-align: center; color: #95a5a6; padding: 20px;">
+                No objects dropped yet. Click on the seesaw to start!
+            </div>
+        `;
+      return;
+    }
+
+    const recent = this.history.slice(-10).reverse();
+
+    this.historyList.innerHTML = recent
+      .map((entry) => {
+        const hue = 120 - (entry.weight - 1) * 12;
+        return `
+                <div class="history-item">
+                    <div class="history-icon" style="background: linear-gradient(135deg,
+                        hsl(${hue}, 70%, 55%),
+                        hsl(${hue}, 70%, 40%)
+                    )"></div>
+
+                    <div class="history-text">
+                        <span class="history-weight">${entry.weight}kg</span>
+                        on <strong>${entry.side}</strong> side /
+                        <strong>${entry.distance}px</strong> from center
+                    </div>
+                </div>
+            `;
+      })
+      .join("");
+  }
+  saveState() {
+    const state = {
+      objects: this.objects.map((obj) => ({
+        position: obj.position,
+        weight: obj.weight,
+      })),
+      history: this.history,
+      nextWeight: this.nextWeight,
+    };
+
+    localStorage.setItem("seesawState", JSON.stringify(state));
+  }
+  loadState() {
+    const saved = localStorage.getItem("seesawState");
+    if (!saved) return;
+
+    try {
+      const state = JSON.parse(saved);
+
+      if (state.nextWeight) {
+        this.nextWeight = state.nextWeight;
+        this.updateNextWeightDisplay();
+      }
+
+      if (state.history) {
+        this.history = state.history;
+        this.updateHistoryDisplay();
+      }
+
+      if (state.objects) {
+        state.objects.forEach((obj) => {
+          this.addObject(obj.position, obj.weight);
+        });
+        this.updateSeesawBalance();
+      }
+    } catch (err) {
+      console.error("Could not load state", err);
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
