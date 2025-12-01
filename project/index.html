@@ -10,9 +10,6 @@
     <main class="container" id="app" role="main" aria-labelledby="app-title">
       <header>
         <h1 id="app-title">Seesaw Simulation</h1>
-        <p class="lead">
-          Click the plank to drop weights. Weights are stored in localStorage.
-        </p>
       </header>
 
       <section class="stats-bar" aria-label="Seesaw statistics">
@@ -37,6 +34,7 @@
       <section class="seesaw-area" aria-label="Seesaw area" role="application">
         <div class="ground" aria-hidden="true"></div>
         <div class="fulcrum" aria-hidden="true"></div>
+
         <div
           class="plank"
           id="plank"
@@ -44,7 +42,9 @@
           tabindex="0"
           aria-pressed="false"
           aria-label="Seesaw plank"
-        ></div>
+        >
+          <div id="scaleGrid" class="scale-grid"></div>
+        </div>
       </section>
 
       <section class="controls" aria-label="Controls">

@@ -25,6 +25,9 @@ class SeesawSimulation {
     this.updateNextWeightDisplay();
     this.createPreview();
     this.loadState();
+
+    this.scaleGrid = document.getElementById("scaleGrid");
+    this.drawScale();
   }
 
   generateRandomWeight() {
@@ -259,6 +262,34 @@ class SeesawSimulation {
     localStorage.removeItem("seesawState");
     this.removePreview();
     this.createPreview();
+  }
+
+  drawScale() {
+    const totalWidth = this.PLANK_WIDTH;
+    const pivot = this.PIVOT_CENTER;
+
+    this.scaleGrid.innerHTML = "";
+
+    for (let x = 0; x <= totalWidth; x += 10) {
+      const line = document.createElement("div");
+
+      const isBig = x % 50 === 0;
+      line.className = "scale-line " + (isBig ? "big" : "small");
+      line.style.left = `${x}px`;
+
+      this.scaleGrid.appendChild(line);
+
+      if (isBig) {
+        const label = document.createElement("div");
+        label.className = "scale-label";
+        label.style.left = `${x}px`;
+
+        const distance = Math.abs(x - pivot);
+        label.textContent = `${distance}px`;
+
+        this.scaleGrid.appendChild(label);
+      }
+    }
   }
 }
 
