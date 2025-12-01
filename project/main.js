@@ -95,7 +95,7 @@ class SeesawSimulation {
         hsl(${hue}, 70%, 40%)
     )`;
 
-    element.style.left = `${position - 17.5}px`; 
+    element.style.left = `${position - 17.5}px`;
     element.style.top = `-120px`;
 
     element.textContent = `${weight}kg`;
@@ -141,6 +141,50 @@ class SeesawSimulation {
       this.previewElement.remove();
       this.previewElement = null;
     }
+  }
+
+  updateSeesawBalance() {
+    let leftTorque = 0;
+    let rightTorque = 0;
+    let leftTotalWeight = 0;
+    let rightTotalWeight = 0;
+
+    this.objects.forEach((obj) => {
+      const distanceFromPivot = Math.abs(obj.position - this.PIVOT_CENTER);
+      const torque = obj.weight * distanceFromPivot;
+
+      if (obj.position < this.PIVOT_CENTER) {
+        leftTorque += torque;
+        leftTotalWeight += obj.weight;
+      } else {
+        rightTorque += torque;
+        rightTotalWeight += obj.weight;
+      }
+    });
+
+    this.leftWeightDisplay.textContent = `${leftTotalWeight} kg`;
+    this.rightWeightDisplay.textContent = `${rightTotalWeight} kg`;
+
+    const angle = Math.max(
+      -this.MAX_ANGLE,
+      Math.min(this.MAX_ANGLE, (rightTorque - leftTorque) / 10)
+    );
+
+    this.currentAngle = angle;
+    this.tiltAngleDisplay.textContent = `${angle.toFixed(1)}°`;
+
+    this.plank.style.transform = `rotate(${angle}deg)`;
+  }
+
+  addToHistory(weight, side, distance) {
+    this.history.push({
+      weight: weight,
+      side: side,
+      distance: distance,
+      timestamp: Date.now(),
+    });
+
+    this.updateHistoryDisplay();
   }
 }
 
