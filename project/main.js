@@ -65,6 +65,34 @@ class SeesawSimulation {
     this.saveState();
   }
 
+  resetSimulation() {
+    this.objects.forEach((obj) => {
+      if (obj.element && obj.element.parentNode) {
+        obj.element.remove();
+      }
+    });
+
+    this.objects = [];
+    this.history = [];
+
+    this.currentAngle = 0;
+    this.plank.style.transform = "rotate(0deg)";
+
+    this.leftWeightDisplay.textContent = "0 kg";
+    this.rightWeightDisplay.textContent = "0 kg";
+    this.tiltAngleDisplay.textContent = "0°";
+
+    this.nextWeight = this.generateRandomWeight();
+    this.updateNextWeightDisplay();
+
+    this.updateHistoryDisplay();
+
+    localStorage.removeItem("seesawState");
+
+    this.removePreview();
+    this.createPreview();
+  }
+
   addObject(position, weight) {
     const objectData = {
       position: position,
