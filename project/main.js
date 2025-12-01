@@ -74,6 +74,7 @@ class SeesawSimulation {
     if (this.isPaused) return;
     const plankRect = this.plank.getBoundingClientRect();
     const mouseX = event.clientX;
+
     if (mouseX < plankRect.left || mouseX > plankRect.right) return;
 
     const relativeX = mouseX - plankRect.left;
@@ -135,26 +136,20 @@ class SeesawSimulation {
     if (this.isPaused || !this.previewElement) return;
 
     const plankRect = this.plank.getBoundingClientRect();
-    const historyRect = this.historyList.getBoundingClientRect();
-
     const mouseX = event.clientX;
     const mouseY = event.clientY;
 
-    // Sadece plank alanının içinde ve history alanının dışında görün
-    const inPlankArea =
-      mouseX >= plankRect.left &&
-      mouseX <= plankRect.right &&
-      mouseY >= plankRect.top &&
-      mouseY <= plankRect.bottom;
+    const isOverPlankX = mouseX >= plankRect.left && mouseX <= plankRect.right;
 
-    this.previewElement.style.opacity = inPlankArea ? 0.5 : 0;
+    const minY = plankRect.top - 100;
+    const maxY = plankRect.bottom + 10;
+    const isOverPlankY = mouseY >= minY && mouseY <= maxY;
 
-    if (inPlankArea) {
-      // Preview'i mouse altında ortala
-      const width = 35; // preview boyutu
-      this.previewElement.style.left = `${mouseX - width / 2}px`;
-      this.previewElement.style.top = `${mouseY - width / 2}px`;
-    }
+    const isVisible = isOverPlankX && isOverPlankY;
+    this.previewElement.style.opacity = isVisible ? 0.5 : 0;
+
+    this.previewElement.style.left = `${mouseX}px`;
+    this.previewElement.style.top = `${mouseY}px`;
   }
 
   removePreview() {

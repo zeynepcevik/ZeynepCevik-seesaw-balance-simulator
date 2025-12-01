@@ -122,8 +122,8 @@ While building the project, the following steps were followed:
 Some parts of the project were assisted using AI tools including:
  
 - Text formatting and README structuring  
-- UX ideas such as object preview  
 - Clarifying physical formulas and calculation logic  
+- Error handling
 
 ## Extras
 
