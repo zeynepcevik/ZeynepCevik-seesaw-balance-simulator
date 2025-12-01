@@ -30,8 +30,8 @@ class SeesawSimulation {
   }
 
   setupEventListeners() {
-    this.seesawArea.addEventListener("click", e => this.handleDrop(e));
-    document.addEventListener("mousemove", e => this.updatePreview(e));
+    this.seesawArea.addEventListener("click", (e) => this.handleDrop(e));
+    document.addEventListener("mousemove", (e) => this.updatePreview(e));
     this.resetBtn.addEventListener("click", () => this.resetSimulation());
   }
 
@@ -42,7 +42,9 @@ class SeesawSimulation {
 
     const relativeX = mouseX - plankRect.left;
     const weight = this.nextWeight;
-    const distanceFromCenter = Math.round(Math.abs(relativeX - this.PIVOT_CENTER));
+    const distanceFromCenter = Math.round(
+      Math.abs(relativeX - this.PIVOT_CENTER)
+    );
     const side = relativeX < this.PIVOT_CENTER ? "left" : "right";
 
     this.addToHistory(weight, side, distanceFromCenter);
@@ -97,27 +99,42 @@ class SeesawSimulation {
     if (!this.previewElement) return;
     const rect = this.plank.getBoundingClientRect();
     const mouseX = event.clientX;
-    this.previewElement.style.opacity = (mouseX < rect.left || mouseX > rect.right) ? 0 : 0.5;
+    this.previewElement.style.opacity =
+      mouseX < rect.left || mouseX > rect.right ? 0 : 0.5;
     this.previewElement.style.left = `${mouseX}px`;
     this.previewElement.style.top = `${event.clientY}px`;
   }
 
   removePreview() {
-    if (this.previewElement) { this.previewElement.remove(); this.previewElement = null; }
+    if (this.previewElement) {
+      this.previewElement.remove();
+      this.previewElement = null;
+    }
   }
 
   updateSeesawBalance() {
-    let leftTorque = 0, rightTorque = 0, leftTotalWeight = 0, rightTotalWeight = 0;
-    this.objects.forEach(obj => {
+    let leftTorque = 0,
+      rightTorque = 0,
+      leftTotalWeight = 0,
+      rightTotalWeight = 0;
+    this.objects.forEach((obj) => {
       const dist = Math.abs(obj.position - this.PIVOT_CENTER);
       const torque = obj.weight * dist;
-      if (obj.position < this.PIVOT_CENTER) { leftTorque += torque; leftTotalWeight += obj.weight; }
-      else { rightTorque += torque; rightTotalWeight += obj.weight; }
+      if (obj.position < this.PIVOT_CENTER) {
+        leftTorque += torque;
+        leftTotalWeight += obj.weight;
+      } else {
+        rightTorque += torque;
+        rightTotalWeight += obj.weight;
+      }
     });
 
     this.leftWeightDisplay.textContent = `${leftTotalWeight} kg`;
     this.rightWeightDisplay.textContent = `${rightTotalWeight} kg`;
-    const angle = Math.max(-this.MAX_ANGLE, Math.min(this.MAX_ANGLE, (rightTorque - leftTorque)/10));
+    const angle = Math.max(
+      -this.MAX_ANGLE,
+      Math.min(this.MAX_ANGLE, (rightTorque - leftTorque) / 10)
+    );
     this.currentAngle = angle;
     this.tiltAngleDisplay.textContent = `${angle.toFixed(1)}°`;
     this.plank.style.transform = `rotate(${angle}deg)`;
@@ -135,23 +152,31 @@ class SeesawSimulation {
     }
 
     const recent = this.history.slice(-10).reverse();
-    this.historyList.innerHTML = recent.map(entry => {
-      const hue = 120 - (entry.weight-1)*12;
-      return `<div class="history-item">
+    this.historyList.innerHTML = recent
+      .map((entry) => {
+        const hue = 120 - (entry.weight - 1) * 12;
+        return `<div class="history-item">
         <div class="history-icon" style="background: linear-gradient(135deg,hsl(${hue},70%,55%),hsl(${hue},70%,40%))"></div>
         <div class="history-text">
           <span class="history-weight">${entry.weight}kg</span> on <strong>${entry.side}</strong> side / <strong>${entry.distance}px</strong> from center
         </div>
       </div>`;
-    }).join("");
+      })
+      .join("");
   }
 
   saveState() {
-    localStorage.setItem("seesawState", JSON.stringify({
-      objects: this.objects.map(o => ({ position: o.position, weight: o.weight })),
-      history: this.history,
-      nextWeight: this.nextWeight
-    }));
+    localStorage.setItem(
+      "seesawState",
+      JSON.stringify({
+        objects: this.objects.map((o) => ({
+          position: o.position,
+          weight: o.weight,
+        })),
+        history: this.history,
+        nextWeight: this.nextWeight,
+      })
+    );
   }
 
   loadState() {
@@ -159,10 +184,21 @@ class SeesawSimulation {
     if (!saved) return;
     try {
       const state = JSON.parse(saved);
-      if (state.nextWeight) { this.nextWeight = state.nextWeight; this.updateNextWeightDisplay(); }
-      if (state.history) { this.history = state.history; this.updateHistoryDisplay(); }
-      if (state.objects) { state.objects.forEach(o => this.addObject(o.position, o.weight)); this.updateSeesawBalance(); }
-    } catch(err) { console.error("Could not load state", err); }
+      if (state.nextWeight) {
+        this.nextWeight = state.nextWeight;
+        this.updateNextWeightDisplay();
+      }
+      if (state.history) {
+        this.history = state.history;
+        this.updateHistoryDisplay();
+      }
+      if (state.objects) {
+        state.objects.forEach((o) => this.addObject(o.position, o.weight));
+        this.updateSeesawBalance();
+      }
+    } catch (err) {
+      console.error("Could not load state", err);
+    }
   }
 
   updateNextWeightDisplay() {
@@ -170,7 +206,9 @@ class SeesawSimulation {
   }
 
   resetSimulation() {
-    this.objects.forEach(o => { if(o.element?.parentNode) o.element.remove(); });
+    this.objects.forEach((o) => {
+      if (o.element?.parentNode) o.element.remove();
+    });
     this.objects = [];
     this.history = [];
     this.currentAngle = 0;

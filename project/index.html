@@ -1,61 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seesaw Simulation</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main class="container" id="app" role="main" aria-labelledby="app-title">
-    <header>
-      <h1 id="app-title">Seesaw Simulation</h1>
-      <p class="lead">Click the plank to drop weights. Weights are stored in localStorage.</p>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seesaw Simulation</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container" id="app" role="main" aria-labelledby="app-title">
+      <header>
+        <h1 id="app-title">Seesaw Simulation</h1>
+        <p class="lead">
+          Click the plank to drop weights. Weights are stored in localStorage.
+        </p>
+      </header>
 
-    <section class="stats-bar" aria-label="Seesaw statistics">
-      <div class="stat-box">
-        <div class="stat-label">Left Weight</div>
-        <div class="stat-value" id="leftWeight">0 kg</div>
-      </div>
-      <div class="stat-box next-weight">
-        <div class="stat-label">Next Weight</div>
-        <div class="stat-value" id="nextWeight">? kg</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Right Weight</div>
-        <div class="stat-value" id="rightWeight">0 kg</div>
-      </div>
-      <div class="stat-box tilt-angle">
-        <div class="stat-label">Tilt Angle</div>
-        <div class="stat-value" id="tiltAngle">0°</div>
-      </div>
-    </section>
-
-    <section class="seesaw-area" aria-label="Seesaw area" role="application">
-      <div class="ground" aria-hidden="true"></div>
-      <div class="fulcrum" aria-hidden="true"></div>
-      <div class="plank" id="plank" role="button" tabindex="0" aria-pressed="false" aria-label="Seesaw plank"></div>
-    </section>
-
-    <section class="controls" aria-label="Controls">
-      <button class="btn" id="resetBtn" type="button" aria-label="Reset simulation">🔄 Reset Seesaw</button>
-    </section>
-
-    <aside class="history-section" aria-label="Drop history">
-      <h2 class="history-title">📝 Drop History</h2>
-      <div class="history-list" id="historyList">
-        <div class="history-empty" style="text-align:center;color:#95a5a6;padding:20px;">
-          No objects dropped yet. Click on the seesaw to start!
+      <section class="stats-bar" aria-label="Seesaw statistics">
+        <div class="stat-box">
+          <div class="stat-label">Left Weight</div>
+          <div class="stat-value" id="leftWeight">0 kg</div>
         </div>
-      </div>
-    </aside>
+        <div class="stat-box next-weight">
+          <div class="stat-label">Next Weight</div>
+          <div class="stat-value" id="nextWeight">? kg</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Right Weight</div>
+          <div class="stat-value" id="rightWeight">0 kg</div>
+        </div>
+        <div class="stat-box tilt-angle">
+          <div class="stat-label">Tilt Angle</div>
+          <div class="stat-value" id="tiltAngle">0°</div>
+        </div>
+      </section>
 
-    <footer style="display:none;">
-      <small id="version">v1.0.0</small>
-    </footer>
-  </main>
+      <section class="seesaw-area" aria-label="Seesaw area" role="application">
+        <div class="ground" aria-hidden="true"></div>
+        <div class="fulcrum" aria-hidden="true"></div>
+        <div
+          class="plank"
+          id="plank"
+          role="button"
+          tabindex="0"
+          aria-pressed="false"
+          aria-label="Seesaw plank"
+        ></div>
+      </section>
 
-  <script src="main.js" defer></script>
-</body>
+      <section class="controls" aria-label="Controls">
+        <button
+          class="btn"
+          id="resetBtn"
+          type="button"
+          aria-label="Reset simulation"
+        >
+          🔄 Reset Seesaw
+        </button>
+      </section>
+
+      <aside class="history-section" aria-label="Drop history">
+        <h2 class="history-title">📝 Drop History</h2>
+        <div class="history-list" id="historyList">
+          <div
+            class="history-empty"
+            style="text-align: center; color: #95a5a6; padding: 20px"
+          >
+            No objects dropped yet. Click on the seesaw to start!
+          </div>
+        </div>
+      </aside>
+
+      <footer style="display: none">
+        <small id="version">v1.0.0</small>
+      </footer>
+    </main>
+
+    <script src="main.js" defer></script>
+  </body>
 </html>
