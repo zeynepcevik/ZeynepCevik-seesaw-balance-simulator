@@ -132,17 +132,29 @@ class SeesawSimulation {
   }
 
   updatePreview(event) {
-    if (this.isPaused) {
-      if (this.previewElement) this.previewElement.style.opacity = 0;
-      return;
-    }
-    if (!this.previewElement) return;
-    const rect = this.plank.getBoundingClientRect();
+    if (this.isPaused || !this.previewElement) return;
+
+    const plankRect = this.plank.getBoundingClientRect();
+    const historyRect = this.historyList.getBoundingClientRect();
+
     const mouseX = event.clientX;
-    this.previewElement.style.opacity =
-      mouseX < rect.left || mouseX > rect.right ? 0 : 0.5;
-    this.previewElement.style.left = `${mouseX}px`;
-    this.previewElement.style.top = `${event.clientY}px`;
+    const mouseY = event.clientY;
+
+    // Sadece plank alanının içinde ve history alanının dışında görün
+    const inPlankArea =
+      mouseX >= plankRect.left &&
+      mouseX <= plankRect.right &&
+      mouseY >= plankRect.top &&
+      mouseY <= plankRect.bottom;
+
+    this.previewElement.style.opacity = inPlankArea ? 0.5 : 0;
+
+    if (inPlankArea) {
+      // Preview'i mouse altında ortala
+      const width = 35; // preview boyutu
+      this.previewElement.style.left = `${mouseX - width / 2}px`;
+      this.previewElement.style.top = `${mouseY - width / 2}px`;
+    }
   }
 
   removePreview() {
