@@ -8,6 +8,8 @@ class SeesawSimulation {
     this.nextWeightDisplay = document.getElementById("nextWeight");
     this.historyList = document.getElementById("historyList");
     this.resetBtn = document.getElementById("resetBtn");
+    this.pauseBtn = document.getElementById("pauseBtn");
+    this.isPaused = false;
 
     this.PLANK_WIDTH = 400;
     this.MAX_ANGLE = 30;
@@ -30,12 +32,43 @@ class SeesawSimulation {
   }
 
   setupEventListeners() {
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        this.pauseBtn?.click();
+      }
+    });
+
     this.seesawArea.addEventListener("click", (e) => this.handleDrop(e));
     document.addEventListener("mousemove", (e) => this.updatePreview(e));
     this.resetBtn.addEventListener("click", () => this.resetSimulation());
+    this.pauseBtn?.addEventListener("click", () => {
+      this.isPaused = !this.isPaused;
+      this.pauseBtn.textContent = this.isPaused ? "▶ Resume" : "⏸ Pause";
+      this.pauseBtn.setAttribute("aria-pressed", String(this.isPaused));
+
+      if (this.isPaused) {
+        if (this.previewElement) this.previewElement.style.opacity = 0;
+        return;
+      }
+
+      if (this.previewElement) {
+        const ev = new MouseEvent("mousemove", {
+          clientX: this.lastMouseX || 0,
+          clientY: this.lastMouseY || 0,
+        });
+        this.updatePreview(ev);
+      }
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      this.lastMouseX = e.clientX;
+      this.lastMouseY = e.clientY;
+    });
   }
 
   handleDrop(event) {
+    if (this.isPaused) return;
     const plankRect = this.plank.getBoundingClientRect();
     const mouseX = event.clientX;
     if (mouseX < plankRect.left || mouseX > plankRect.right) return;
@@ -96,6 +129,10 @@ class SeesawSimulation {
   }
 
   updatePreview(event) {
+    if (this.isPaused) {
+      if (this.previewElement) this.previewElement.style.opacity = 0;
+      return;
+    }
     if (!this.previewElement) return;
     const rect = this.plank.getBoundingClientRect();
     const mouseX = event.clientX;
@@ -156,11 +193,11 @@ class SeesawSimulation {
       .map((entry) => {
         const hue = 120 - (entry.weight - 1) * 12;
         return `<div class="history-item">
-        <div class="history-icon" style="background: linear-gradient(135deg,hsl(${hue},70%,55%),hsl(${hue},70%,40%))"></div>
-        <div class="history-text">
-          <span class="history-weight">${entry.weight}kg</span> on <strong>${entry.side}</strong> side / <strong>${entry.distance}px</strong> from center
-        </div>
-      </div>`;
+      <div class="history-icon" style="background: linear-gradient(135deg,hsl(${hue},70%,55%),hsl(${hue},70%,40%))"></div>
+      <div class="history-text">
+        📦 ${entry.weight}kg dropped on <strong>${entry.side}</strong> side at <strong>${entry.distance}px</strong> from center
+      </div>
+    </div>`;
       })
       .join("");
   }
