@@ -97,7 +97,9 @@ body {
 
 .plank {
   position: absolute;
-  width: 400px;
+  width: 90%;
+  max-width: 400px;
+  bottom: calc(80px + 35px);
   height: 15px;
   background: linear-gradient(to bottom, #d4a574, #a67c52);
   border-radius: 8px;
@@ -304,4 +306,10 @@ body {
   font-size: 10px;
   transform: translateX(-50%);
   opacity: 0.8;
+}
+@media (max-width: 768px) {
+  .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+@media (max-width: 480px) {
+  .stats-bar { grid-template-columns: 1fr; gap: 8px; }
 }
